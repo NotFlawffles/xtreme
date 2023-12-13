@@ -1,5 +1,4 @@
-#include "../../include/engine/window.h"
-#include <malloc.h>
+#include "../../include/xtreme.h"
 
 Window* window_new(const char* title, Vector2 size, char configuration) {
     Window* window = malloc(sizeof(Window));

@@ -1,8 +1,10 @@
 CC = cc
-CFLAGS = -Wall -Wextra -pedantic -ggdb -o
-OBJECT = xtreme
+CFLAGS = -Wall -Wextra -ggdb -fPIC -shared -o
+OBJECT = libxtreme.so
 SRC = $(shell find src/ -type f -name *.c)
-INSTALLATION_TARGET = /usr/bin/xtreme
+INCLUDE = include/*
+INSTALLATION_TARGET = /usr/lib/$(OBJECT)
+INCLUDE_TARGET = /usr/include/
 LIBS = -lraylib
 
 default: $(SRC)
@@ -11,9 +13,11 @@ default: $(SRC)
 clean: $(OBJECT)
 	@rm $(OBJECT)
 
-install: $(INSTALLATION_TARGET)
+install:
 	@make default
 	@sudo mv $(OBJECT) $(INSTALLATION_TARGET)
+	@sudo cp -r $(INCLUDE) $(INCLUDE_TARGET)
 
 uninstall: $(INSTALLATION_TARGET)
-	@sudo rm $(INSTALLATION_TARGET)
+	@sudo rm -r $(INSTALLATION_TARGET)
+	@sudo rm -r $(INCLUDE_TARGET)

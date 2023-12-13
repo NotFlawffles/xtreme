@@ -1,9 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <raylib.h>
-#include "../../misc/attribute.h"
-
 typedef enum {
     NodeScene,
     NodeArea,

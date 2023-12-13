@@ -1,6 +1,4 @@
-#include "../../../include/engine/node/node.h"
-#include <malloc.h>
-#include <string.h>
+#include "../../../include/xtreme.h"
 
 Node* node_new(Node* parent, const char* name, NodeKind kind) {
     Node* node = malloc(sizeof(Node));

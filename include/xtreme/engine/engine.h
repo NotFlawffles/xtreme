@@ -1,9 +1,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "window.h"
-#include "node/node.h"
-
 typedef struct ENGINE {
     Window* window;
     unsigned int frames_per_second;

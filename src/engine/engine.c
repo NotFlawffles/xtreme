@@ -1,6 +1,4 @@
-#include "../../include/engine/engine.h"
-#include <malloc.h>
-#include <string.h>
+#include "../../include/xtreme.h"
 
 Engine* engine_new(Window* window, unsigned int frames_per_second) {
     Engine* engine = malloc(sizeof(Engine));
