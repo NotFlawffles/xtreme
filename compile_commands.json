@@ -1,0 +1,18 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-ggdb",
+      "-o",
+      "xtreme",
+      "src/engine/engine.c"
+    ],
+    "directory": "/home/notflawffles/Programming/xtreme",
+    "file": "/home/notflawffles/Programming/xtreme/src/engine/engine.c",
+    "output": "/home/notflawffles/Programming/xtreme/xtreme"
+  }
+]
