@@ -5,15 +5,16 @@ SRC = $(shell find src/ -type f -name *.c)
 INCLUDE = include/*
 INSTALLATION_TARGET = /usr/lib/$(OBJECT)
 INCLUDE_TARGET = /usr/include/
+DEPS = /usr/lib/libraylib.so*
 LIBS = -lraylib
 
-default: $(SRC)
+default: $(SRC) $(DEPS)
 	@$(CC) $(CFLAGS) $(OBJECT) $(SRC) $(LIBS)
 
 clean: $(OBJECT)
 	@rm $(OBJECT)
 
-install:
+install: $(DEPS)
 	@make default
 	@sudo mv $(OBJECT) $(INSTALLATION_TARGET)
 	@sudo cp -r $(INCLUDE) $(INCLUDE_TARGET)
