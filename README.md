@@ -1,7 +1,7 @@
 # XTreme
 A simple game engine based on [the raylib library](https://github.com/raysan5/raylib)
 
-[pong example](https://github.com/NotFlawffles/xtreme/blob/main/screenshot.png)
+![pong example](https://github.com/NotFlawffles/xtreme/blob/main/screenshot.png)
 
 # Installation
 ```shell
