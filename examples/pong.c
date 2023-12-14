@@ -16,15 +16,15 @@ void left_paddle_process(Node* self, float delta_time) {
     Node* area = node_get_child(self, "area");
 
     if (IsKeyDown(KEY_W)) {
-	area->offset.y -= speed * delta_time;
+	area->position.y -= speed * delta_time;
     } else if (IsKeyDown(KEY_S)) {
-	area->offset.y += speed * delta_time;
+	area->position.y += speed * delta_time;
     }
 
-    if (area->offset.y <= 0) {
-	area->offset.y = 0;
-    } else if (area->offset.y + area->size.y >= self->parent->size.y) {
-	area->offset.y = self->parent->size.y - area->size.y;
+    if (area->position.y <= 0) {
+	area->position.y = 0;
+    } else if (area->position.y + area->size.y >= self->parent->size.y) {
+	area->position.y = self->parent->size.y - area->size.y;
     }
 }
 
@@ -39,22 +39,22 @@ void right_paddle_process(Node* self, float delta_time) {
     Node* area = node_get_child(self, "area");
 
     if (IsKeyDown(KEY_UP)) {
-	area->offset.y -= speed * delta_time;
+	area->position.y -= speed * delta_time;
     } else if (IsKeyDown(KEY_DOWN)) {
-	area->offset.y += speed * delta_time;
+	area->position.y += speed * delta_time;
     }
 
-    if (area->offset.y <= 0) {
-	area->offset.y = 0;
-    } else if (area->offset.y + area->size.y >= self->parent->size.y) {
-	area->offset.y = self->parent->size.y - area->size.y;
+    if (area->position.y <= 0) {
+	area->position.y = 0;
+    } else if (area->position.y + area->size.y >= self->parent->size.y) {
+	area->position.y = self->parent->size.y - area->size.y;
     }
 }
 
 void left_paddle_area_init(Node* self) {
     self->size = (Vector2) {25, 100};
-    self->offset.x = 0;
-    self->offset.y = (self->parent->parent->size.y/2) - self->size.y/2;
+    self->position.x = 0;
+    self->position.y = (self->parent->parent->size.y/2) - self->size.y/2;
 }
 
 void left_paddle_area_process(Node* self, float delta_time) {
@@ -64,8 +64,8 @@ void left_paddle_area_process(Node* self, float delta_time) {
 
 void right_paddle_area_init(Node* self) {
     self->size = (Vector2) {25, 100};
-    self->offset.x = self->parent->parent->size.x - self->size.x;
-    self->offset.y = (self->parent->parent->size.y/2) - self->size.y/2;
+    self->position.x = self->parent->parent->size.x - self->size.x;
+    self->position.y = (self->parent->parent->size.y/2) - self->size.y/2;
 }
 
 void right_paddle_area_process(Node* self, float delta_time) {
@@ -75,7 +75,7 @@ void right_paddle_area_process(Node* self, float delta_time) {
 
 void ball_area_init(Node* self) {
     self->size = (Vector2) {15, 15};
-    self->offset = (Vector2) {(self->parent->parent->size.x/2) - (self->size.x/2), (self->parent->parent->size.y/2) - (self->size.y/2)};
+    self->position = (Vector2) {(self->parent->parent->size.x/2) - (self->size.x/2), (self->parent->parent->size.y/2) - (self->size.y/2)};
     Vector2* velocity = malloc(sizeof(Vector2));
     int* speed = malloc(sizeof(int));
     *velocity = (Vector2) {1, 1};
@@ -92,21 +92,21 @@ void ball_area_process(Node* self, float delta_time) {
     Node* right_paddle = node_get_child(self->parent->parent, "right paddle");
     Node* right_paddle_area = node_get_child(right_paddle, "area");
 
-    if (self->offset.y <= 0 || self->offset.y >= self->parent->parent->size.y - self->size.y) {
+    if (self->position.y <= 0 || self->position.y >= self->parent->parent->size.y - self->size.y) {
 	velocity->y *= -1;
     }
 
-    if (CheckCollisionRecs((Rectangle) {left_paddle_area->offset.x, left_paddle_area->offset.y, left_paddle_area->size.x, left_paddle_area->size.y},
-			   (Rectangle) {self->offset.x, self->offset.y, self->size.x, self->size.y}) ||
+    if (CheckCollisionRecs((Rectangle) {left_paddle_area->position.x, left_paddle_area->position.y, left_paddle_area->size.x, left_paddle_area->size.y},
+			   (Rectangle) {self->position.x, self->position.y, self->size.x, self->size.y}) ||
 
-	CheckCollisionRecs((Rectangle) {right_paddle_area->offset.x, right_paddle_area->offset.y, right_paddle_area->size.x, right_paddle_area->size.y},
-			   (Rectangle) {self->offset.x, self->offset.y, self->size.x, self->size.y}))
+	CheckCollisionRecs((Rectangle) {right_paddle_area->position.x, right_paddle_area->position.y, right_paddle_area->size.x, right_paddle_area->size.y},
+			   (Rectangle) {self->position.x, self->position.y, self->size.x, self->size.y}))
     {
 	velocity->x *= -1;
     }
 
-    self->offset.x += velocity->x * speed * delta_time;
-    self->offset.y += velocity->y * speed * delta_time;
+    self->position.x += velocity->x * speed * delta_time;
+    self->position.y += velocity->y * speed * delta_time;
 }
 
 void init(Engine* self) {
@@ -129,7 +129,7 @@ void init(Engine* self) {
     Node* ball_area = node_new(ball, "area", NodeArea);
     node_attach_methods(ball_area, ball_area_init, ball_area_process);
 
-    engine_add_node(self, main);
+    engine_add_root_node(self, main);
 }
 
 void process(Engine* self) {
@@ -137,7 +137,7 @@ void process(Engine* self) {
 }
 
 void draw(Engine* self) {
-    Node* main = engine_get_node(self, "main");
+    Node* main = engine_get_root_node(self, "main");
     Node* left_paddle = node_get_child(main, "left paddle");
     Node* left_paddle_area = node_get_child(left_paddle, "area");
     Node* right_paddle = node_get_child(main, "right paddle");
@@ -146,9 +146,9 @@ void draw(Engine* self) {
     Node* ball_area = node_get_child(ball, "area");
 
     DrawText("XTreme Engine", (main->size.x/2) - 190, 10, 50, BLUE);
-    DrawRectangleGradientV(left_paddle_area->offset.x, left_paddle_area->offset.y, left_paddle_area->size.x, left_paddle_area->size.y, RED, BLUE);
-    DrawRectangleGradientV(right_paddle_area->offset.x, right_paddle_area->offset.y, right_paddle_area->size.x, right_paddle_area->size.y, RED, BLUE);
-    DrawRectangle(ball_area->offset.x, ball_area->offset.y, ball_area->size.x, ball_area->size.y, BLUE);
+    DrawRectangleGradientV(left_paddle_area->position.x, left_paddle_area->position.y, left_paddle_area->size.x, left_paddle_area->size.y, RED, BLUE);
+    DrawRectangleGradientV(right_paddle_area->position.x, right_paddle_area->position.y, right_paddle_area->size.x, right_paddle_area->size.y, RED, BLUE);
+    DrawRectangle(ball_area->position.x, ball_area->position.y, ball_area->size.x, ball_area->size.y, BLUE);
 }
 
 int main(void) {

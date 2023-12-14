@@ -14,8 +14,8 @@ typedef struct ENGINE {
 } Engine;
 
 Engine* engine_new(Window* window, unsigned int frames_per_second);
-void engine_add_node(Engine* engine, Node* node);
-Node* engine_get_node(Engine* engine, const char* name);
+void engine_add_root_node(Engine* engine, Node* node);
+Node* engine_get_root_node(Engine* engine, const char* name);
 void engine_init_nodes(Node* node);
 void engine_process_nodes(Node* node, float delta_time);
 

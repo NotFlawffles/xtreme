@@ -13,12 +13,12 @@ Engine* engine_new(Window* window, unsigned int frames_per_second) {
     return engine;
 }
 
-void engine_add_node(Engine* engine, Node* node) {
+void engine_add_root_node(Engine* engine, Node* node) {
     engine->nodes = realloc(engine->nodes, (engine->nodes_size + 1) * sizeof(Node*));
     engine->nodes[engine->nodes_size++] = node;
 }
 
-Node* engine_get_node(Engine* engine, const char* name) {
+Node* engine_get_root_node(Engine* engine, const char* name) {
     for (unsigned int index = 0; index < engine->nodes_size; index++) {
 	if (memcmp(engine->nodes[index]->name, name, strlen(engine->nodes[index]->name)) == 0) {
 	    return engine->nodes[index];

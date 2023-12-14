@@ -7,7 +7,6 @@ Node* node_new(Node* parent, const char* name, NodeKind kind) {
     node->parent = parent;
     node->children = malloc(sizeof(Node*));
     node->children_size = 0;
-    node->offset = parent ? parent->offset : (Vector2) {0, 0};
     node->size = (Vector2) {5, 5};
     node->rotation = 0;
     node->attributes = malloc(sizeof(Attribute*));
@@ -15,11 +14,36 @@ Node* node_new(Node* parent, const char* name, NodeKind kind) {
     node->init = 0;
     node->process = 0;
 
+    Node* root = node_get_root_scene(node);
+    node->position = root ? root->position : (Vector2) {0, 0};
+
     if (parent) {
 	node_add_child(parent, node);
     }
 
     return node;
+}
+
+Node* node_get_root_scene(Node* node) {
+    Node* root = node;
+
+    while (root) {
+	if (root->kind == NodeScene) {
+	    break;
+	}
+
+	root = root->parent;
+    }
+
+    return root;
+}
+
+void node_attach_position_to_root_scene(Node* node) {
+    Node* root = node_get_root_scene(node);
+    
+    if (root) {
+	node->position = root->position;
+    }
 }
 
 void node_attach_methods(Node* node, void (*init)(Node* self), void (*process)(Node* self, float delta_time)) {
