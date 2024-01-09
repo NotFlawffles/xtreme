@@ -1,4 +1,5 @@
-#include <xtreme.h>
+#include <malloc.h>
+#include <xtreme/engine/engine.h>
 
 const int WINDOW_SCALE = 512;
 const float WINDOW_ASPECT_RATIO = 16.0/9;
@@ -11,14 +12,14 @@ void left_paddle_init(Node* self) {
     node_add_attribute(self, attribute_new("speed", speed));
 }
 
-void left_paddle_process(Node* self, float delta_time) {
+void left_paddle_process(Node* self, float delta) {
     const int speed = *(int*) node_get_attribute(self, "speed");
     Node* area = node_get_child(self, "area");
 
     if (IsKeyDown(KEY_W)) {
-	area->position.y -= speed * delta_time;
+	area->position.y -= speed * delta;
     } else if (IsKeyDown(KEY_S)) {
-	area->position.y += speed * delta_time;
+	area->position.y += speed * delta;
     }
 
     if (area->position.y <= 0) {
@@ -34,14 +35,14 @@ void right_paddle_init(Node* self) {
     node_add_attribute(self, attribute_new("speed", speed));
 }
 
-void right_paddle_process(Node* self, float delta_time) {
+void right_paddle_process(Node* self, float delta) {
     const int speed = *(int*) node_get_attribute(self, "speed");
     Node* area = node_get_child(self, "area");
 
     if (IsKeyDown(KEY_UP)) {
-	area->position.y -= speed * delta_time;
+	area->position.y -= speed * delta;
     } else if (IsKeyDown(KEY_DOWN)) {
-	area->position.y += speed * delta_time;
+	area->position.y += speed * delta;
     }
 
     if (area->position.y <= 0) {
@@ -57,9 +58,9 @@ void left_paddle_area_init(Node* self) {
     self->position.y = (self->parent->parent->size.y/2) - self->size.y/2;
 }
 
-void left_paddle_area_process(Node* self, float delta_time) {
+void left_paddle_area_process(Node* self, float delta) {
     (void) self;
-    (void) delta_time;
+    (void) delta;
 }
 
 void right_paddle_area_init(Node* self) {
@@ -68,9 +69,9 @@ void right_paddle_area_init(Node* self) {
     self->position.y = (self->parent->parent->size.y/2) - self->size.y/2;
 }
 
-void right_paddle_area_process(Node* self, float delta_time) {
+void right_paddle_area_process(Node* self, float delta) {
     (void) self;
-    (void) delta_time;
+    (void) delta;
 }
 
 void ball_area_init(Node* self) {
@@ -84,7 +85,7 @@ void ball_area_init(Node* self) {
     node_add_attribute(self, attribute_new("speed", speed));
 }
 
-void ball_area_process(Node* self, float delta_time) {
+void ball_area_process(Node* self, float delta) {
     Vector2* velocity = node_get_attribute(self, "velocity");
     const int speed = *(int*) node_get_attribute(self, "speed");
     Node* left_paddle = node_get_child(self->parent->parent, "left paddle");
@@ -105,8 +106,8 @@ void ball_area_process(Node* self, float delta_time) {
 	velocity->x *= -1;
     }
 
-    self->position.x += velocity->x * speed * delta_time;
-    self->position.y += velocity->y * speed * delta_time;
+    self->position.x += velocity->x * speed * delta;
+    self->position.y += velocity->y * speed * delta;
 }
 
 void init(Engine* self) {
@@ -132,8 +133,9 @@ void init(Engine* self) {
     engine_add_root_node(self, main);
 }
 
-void process(Engine* self) {
+void process(Engine* self, float delta) {
     (void) self;
+    (void) delta;
 }
 
 void draw(Engine* self) {

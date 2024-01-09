@@ -1,6 +1,9 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <raylib.h>
+#include "../misc/attribute.h"
+
 typedef enum {
     NodeScene,
     NodeArea,
@@ -18,14 +21,14 @@ typedef struct NODE {
     float rotation;
     Attribute** attributes;
     unsigned long attributes_size;
-    void (*init)(struct NODE* self);
+    void (*ready)(struct NODE* self);
     void (*process)(struct NODE* self, float delta_time);
 } Node;
 
 Node* node_new(Node* parent, const char* name, NodeKind kind);
 Node* node_get_root_scene(Node* node);
 void node_attach_position_to_root_scene(Node* node);
-void node_attach_methods(Node* node, void (*init)(Node* self), void (*process)(Node* self, float delta_time));
+void node_attach_methods(Node* node, void (*ready)(Node* self), void (*process)(Node* self, float delta_time));
 void node_add_child(Node* node, Node* child);
 void node_remove_child(Node* node, const Node* child);
 Node* node_get_child(const Node* node, const char* name);

@@ -1,4 +1,6 @@
-#include "../../../include/xtreme.h"
+#include <malloc.h>
+#include <string.h>
+#include "../../../include/xtreme/node/node.h"
 
 Node* node_new(Node* parent, const char* name, NodeKind kind) {
     Node* node = malloc(sizeof(Node));
@@ -11,7 +13,7 @@ Node* node_new(Node* parent, const char* name, NodeKind kind) {
     node->rotation = 0;
     node->attributes = malloc(sizeof(Attribute*));
     node->attributes_size = 0;
-    node->init = 0;
+    node->ready = 0;
     node->process = 0;
 
     Node* root = node_get_root_scene(node);
@@ -46,8 +48,8 @@ void node_attach_position_to_root_scene(Node* node) {
     }
 }
 
-void node_attach_methods(Node* node, void (*init)(Node* self), void (*process)(Node* self, float delta_time)) {
-    node->init = init;
+void node_attach_methods(Node* node, void (*ready)(Node* self), void (*process)(Node* self, float delta)) {
+    node->ready = ready;
     node->process = process;
 }
 

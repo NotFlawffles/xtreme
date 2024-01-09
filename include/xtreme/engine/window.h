@@ -1,6 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <raylib.h>
+
 typedef struct {
     const char* title;
     Vector2 position;
